@@ -1,0 +1,56 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: sge-postgres
+    networks:
+      - sge_network
+    ports:
+      - "5439:5432"
+    environment:
+      POSTGRES_DB: sge
+      POSTGRES_USER: sge
+      POSTGRES_PASSWORD: sge
+    volumes:
+      - sge_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sge"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: sge-prometheus
+    networks:
+      - sge_network
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - sge_prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: sge-grafana
+    networks:
+      - sge_network
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - sge_grafana_data:/var/lib/grafana
+
+volumes:
+  sge_postgres_data:
+  sge_prometheus_data:
+  sge_grafana_data:
+
+networks:
+  sge_network:
+    driver: bridge
