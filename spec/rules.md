@@ -14,7 +14,7 @@
 | RG-08 | Todas as operações de escrita registram `createdAt` e `updatedAt` |
 | RG-09 | O frontend redireciona para `/login` quando recebe HTTP 401 |
 | RG-10 | CORS habilitado apenas para a origem do frontend (ex: `http://localhost:5173`) |
-| RG-11 | O Actuator expõe os endpoints `/actuator/health` e `/actuator/metrics` para monitoramento |
+| RG-11 | O Actuator expõe os endpoints `/actuator/health`, `/actuator/metrics` e `/actuator/prometheus` para monitoramento |
 | RG-12 | Toda service deve ter testes unitários com JUnit 5 e Mockito |
 | RG-13 | Todo endpoint REST deve ter teste de integração validando status e corpo da resposta |
 | RG-14 | O frontend deve ser responsivo e funcionar integralmente em dispositivos desktop e mobile (breakpoints: ≥ 1024px desktop, < 1024px tablet/mobile) |

@@ -109,6 +109,37 @@ Cores definidas via `@theme` no Tailwind CSS v4 (arquivo `frontend/src/styles/th
 
 **Arquivo**: `/bd/docker-compose.yml`
 
+### Observabilidade (Prometheus + Grafana)
+
+Pipeline de métricas:
+
+```
+Backend (8080) ──(/actuator/prometheus)──> Prometheus (9090) ──> Grafana (3000)
+```
+
+**Pré-requisitos**:
+- Backend rodando na máquina host (`mvn spring-boot:run`)
+- Containers Prometheus e Grafana sobem via Docker Compose
+
+**Subir os serviços**:
+```bash
+cd bd && docker compose up -d prometheus grafana
+```
+
+**Acessos**:
+| Serviço | URL |
+|---------|-----|
+| Prometheus | http://localhost:9090 |
+| Grafana | http://localhost:3000 (admin/admin) |
+
+**Grafana**: o datasource Prometheus já é provisionado automaticamente. Basta importar ou criar dashboards com métricas como `jvm_memory_used_bytes`, `http_server_requests_seconds_count`, `system_cpu_usage`.
+
+**Arquivos de configuração**:
+| Arquivo | Função |
+|---------|--------|
+| `bd/prometheus.yml` | Configuração do scrape job apontando para o backend |
+| `bd/grafana/datasources/datasource.yml` | Provisionamento automático do datasource no Grafana |
+
 ## Estilo Arquitetural
 
 - **Monólito Modular**: único deploy, mas com separação clara entre domínios
